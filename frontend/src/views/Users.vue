@@ -322,8 +322,9 @@ export default {
           latestTemperatureValue = alertDht[1].data[0];
           idOfPlant = alertDht[i].name;
 
-          this.temperatureNow = latestTemperatureValue;
-          this.humidityNow = latestHumidityValue;
+        
+         this.humidityNow = latestHumidityValue;
+         this.temperatureNow = latestTemperatureValue;
 
           this.checkHumidity(latestHumidityValue, idOfPlant);
           this.checkTemperature(latestTemperatureValue, idOfPlant);
