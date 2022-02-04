@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- Modal Edit-->
     <div
       class="modal fade"
@@ -35,16 +34,19 @@
                 v-model="sensorName"
                 width="20%"
               />
-              <!--  <label for="sensorType">new Sensorname</label> -->
             </div>
 
             <!-- Edit SensorType -->
             <div class="mb-3">
-             sensorname
-               <select class="form-select" aria-label="Default select example" v-model="sensorType">
-  <option selected value="Moisture"  >Moisture</option>
-  <option value="Moisture and DHT" >Moisture and DHT</option>
-</select>
+              sensorname
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                v-model="sensorType"
+              >
+                <option selected value="Moisture">Moisture</option>
+                <option value="Moisture and DHT">Moisture and DHT</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer">
@@ -89,15 +91,8 @@ export default {
   },
 
   methods: {
-    
     async editSensor() {
       let sentSensorData;
-      /*       let sensorData = {
-    //user: this.user,
-    sensorId: this.editSensorWithThisId,
-    sensorName: this.sensorName,
-    sensorType: this.sensorType,
-    }; */
       console.log(this.sensorName + this.sensorType + " yoyoyooyyoyo");
       if (
         this.sensorName === null ||
@@ -131,10 +126,7 @@ export default {
           sensorType: this.sensorType,
         };
       }
-      console.log(sentSensorData + "value of sensorData in editSensors");
-      //sent Hide to Parent
 
-      //let usernameStore = this.$store.getters.getUser;
       const uri = "http://localhost:3000/api/editSensor/";
       axios.post(uri, sentSensorData).then((response) => {
         console.log(response + "sensor has been edited");
@@ -143,7 +135,6 @@ export default {
     },
     cancel() {
       this.$router.push("/api/sensors/");
-      //sent Hide to Parent
     },
   },
 };

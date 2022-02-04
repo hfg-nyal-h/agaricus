@@ -1,12 +1,12 @@
 <template>
-<!-- Modal -->
+  <!-- Modal -->
   <div
     class="modal fade"
     id="createModal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
-    >
+  >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -32,28 +32,18 @@
               v-model="sensorName"
               width="20%"
             />
-            <!--  <label for="sensorType">new Sensorname</label> -->
+          
           </div>
-
-      
-
-          <!-- Edit SensorType -->
-          <!-- <div class="mb-3">
-            <label class="form-label" for="sensorType">sensortype</label>
-            <input
-              type="text"
-              class="form-control"
-              id="sensorType"
-              v-model="sensorType"
-              width="20%"
-            />
-          </div> -->
           <div class="mb-3">
             sensortype
-            <select class="form-select" aria-label="Default select example" v-model="sensorType">
-  <option value="Moisture" selected >Moisture</option>
-  <option value="Moisture and DHT" >Moisture and DHT</option>
-</select>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              v-model="sensorType"
+            >
+              <option value="Moisture" selected>Moisture</option>
+              <option value="Moisture and DHT">Moisture and DHT</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer">
@@ -75,9 +65,8 @@
         </div>
       </div>
     </div>
-     <router-view />
+    <router-view />
   </div>
-
 </template>
 
 <script>
@@ -95,8 +84,6 @@ export default {
       noOwner: [],
     };
   },
-
-
 
   methods: {
     async createSensor() {
@@ -120,26 +107,7 @@ export default {
           console.log(error);
         });
       location.reload();
-
     },
-
-    async searchSensor() {
-
-      const uri = "http://localhost:3000/api/sensorData/searchSensor/";
-      console.log("searching Sensor");
-      await axios
-        .get(uri)
-        .then(function (response) {
-          this.noOwner = response.data;  
-          console.log("backend answered:");
-          console.log(response.data);
- 
-        })
-        /* .catch(function (error) {
-          console.log("something went wrong:");
-          console.log(error);
-        }); */
-    }, 
     cancel() {
       this.$router.push("/api/sensors/");
     },

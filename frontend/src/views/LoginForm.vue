@@ -25,11 +25,15 @@
               v-model="password"
             />
             <label for="floatingPassword">Password</label>
-            <br>
+            <br />
             <router-link class="float-left" :to="{ name: 'RegisterForm' }"
-                >Create an Account! </router-link
-              >
-            <input type="submit" value="Log Me In!" class="btn btn-primary btn-sm float-right">
+              >Create an Account!
+            </router-link>
+            <input
+              type="submit"
+              value="Log Me In!"
+              class="btn btn-primary btn-sm float-right"
+            />
           </div>
         </form>
       </div>
@@ -64,8 +68,6 @@ export default {
         .post(uri, userData)
         .then(function (response) {
           console.log("backend answered:");
-          console.log(response);
-          console.log(response.data.token);
           localStorage.setItem(uri, response.data.token);
         })
         .catch(function (error) {
@@ -77,7 +79,6 @@ export default {
       const token = response.token;
       const userId = response.userId;
       this.$store.dispatch("login", { token, userId });
-      //this.$store.commit(uri, { token, userId });
       this.$router.push("/");
     },
   },

@@ -12,8 +12,6 @@ export default {
       .then((response) => response.data);
   },
   getSecretContent() {
-    return axios
-    .get(url + "users/")
-    .then((response) => response.data);
+    return axios.get(url + "users/").then((response) => response.data);
   },
 };

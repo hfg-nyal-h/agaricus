@@ -42,42 +42,65 @@
       </nav>
     </div>
 
-
-    <div v-show="alertWater"  class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Holy guacamole!</strong> {{messageWater[i]}}
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+    <div
+      v-show="alertWater"
+      class="alert alert-warning alert-dismissible fade show"
+      role="alert"
+    >
+      <strong>Holy guacamole!</strong> {{ messageWater[i] }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
 
     <br />
 
     <!-- Page Content -->
     <div id="content">
-      <!-- v-if Loged in? -->
-      <!-- We'll fill this with dummy content -->
+
       <div class="row text-justify">
         <div class="col-8 text-start">
           <h3>{{ username }}'s sensor dashboard</h3>
         </div>
         <div class="fw-lighter col-4 text-end">
-          Temperature: {{temperatureNow}}°C
-          Humidity: {{humidityNow}}%
-        
+          Temperature: {{ temperatureNow }}°C Humidity: {{ humidityNow }}%
         </div>
       </div>
 
-<div v-show="showTemperature" class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Warning!</strong> {{temperatureNow}} {{messageTemperature}}
+      <div
+        v-show="showTemperature"
+        class="alert alert-warning alert-dismissible fade show"
+        role="alert"
+      >
+        <strong>Warning!</strong> {{ temperatureNow }} {{ messageTemperature }}
 
-  {{messageTemperature2}} 
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+        {{ messageTemperature2 }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
 
-<div v-show="showHumidity" class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Warning!</strong> {{humidityNow}} {{messageHumidity}} <br>
-   The humidity level of the room must be constant at least 65%. <br>
- {{messageHumidity2}}
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+      <div
+        v-show="showHumidity"
+        class="alert alert-warning alert-dismissible fade show"
+        role="alert"
+      >
+        <strong>Warning!</strong> {{ humidityNow }} {{ messageHumidity }} <br />
+        The humidity level of the room must be constant at least 65%. <br />
+        {{ messageHumidity2 }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
 
       <!-- Charts -->
       <br />
@@ -88,7 +111,7 @@
           :key="mySensor"
           class="col-lg-5 grey aligns-items-center"
         >
-       <div class="fw-lighter"> {{messageWater[index]}} </div>
+          <div class="fw-lighter">{{ messageWater[index] }}</div>
           <h5>
             <b>{{ ++index }}. sensor</b>
           </h5>
@@ -111,7 +134,7 @@
           <div class="col"></div>
           <div class="col"></div>
           <div class="col"></div>
-          <div class="col">{{ moistureChartRange }}</div>
+          <div class="col"></div>
           <div class="col">
             <select
               class="form-select w-70"
@@ -182,7 +205,6 @@ export default {
       temperatureNow: [],
       showTemperature: false,
       showHumidity: false,
-
     };
   },
 
@@ -216,8 +238,6 @@ export default {
       .then((response) => {
         let data = response.data;
         console.log("_____oooo________");
-        //console.log(this.mySensors);
-        //this.mySensors
         let newData = [];
         let newDataCat = [];
         data.forEach((sensor) => {
@@ -235,13 +255,12 @@ export default {
           newDataCat.push(cat);
         });
 
-        //console.log(newData);
         this.mySensorsLineChart = [...newData];
         this.mySensorsLineChartCategories = [...newDataCat];
         this.mySensors = data;
         let alert = [...newData];
 
-        //console.log(alert);
+
         for (let i = 0; i < alert.length; i++) {
           let latestValue = [];
           let idOfPlant = [];
@@ -265,8 +284,7 @@ export default {
       .post(uriDht, sendingData)
       .then((response) => {
         let data = response.data;
-        //console.log(response.data)
-       // console.log("_____________");
+
 
         let newDataDht = [];
         let labels = [];
@@ -294,10 +312,6 @@ export default {
 
         this.dhtSensors = data;
         let alertDht = [...newDataDht];
-        // console.log(alertDht);
-        //  console.log(alertDht[0].data[0]);
-        //  console.log(alertDht[1].data[0]);
-        // console.log("alertDht")
 
         console.log(alertDht);
         for (let i = 0; i < alertDht.length; i++) {
@@ -308,11 +322,8 @@ export default {
           latestTemperatureValue = alertDht[1].data[0];
           idOfPlant = alertDht[i].name;
 
-          // console.log(latestHumidityValue, latestTemperatureValue)
-          // console.log("latest values")
-
-          this.temperatureNow = latestTemperatureValue
-          this.humidityNow = latestHumidityValue
+          this.temperatureNow = latestTemperatureValue;
+          this.humidityNow = latestHumidityValue;
 
           this.checkHumidity(latestHumidityValue, idOfPlant);
           this.checkTemperature(latestTemperatureValue, idOfPlant);
@@ -333,80 +344,68 @@ export default {
     sensorManager() {
       this.$router.push("/api/sensors");
     },
-    
-    triggerAlert(i, type, status, idOfPlant){
-    if(type == "water"){
-      //staus
-      console.log(idOfPlant)
-      if(status === 1){
-      this.messageWater[i] = "Please water the champignons " 
-      } else if ( status === 2){
-      this.messageWater[i] = "The champignons are pretty dry" 
-      } else if (status === 3 ){
-      this.messageWater[i] = "The champignons need water! They're dying"
+
+    triggerAlert(i, type, status, idOfPlant) {
+      if (type == "water") {
+        //staus
+        console.log(idOfPlant);
+        if (status === 1) {
+          this.messageWater[i] = "Please water the champignons ";
+        } else if (status === 2) {
+          this.messageWater[i] = "The champignons are pretty dry";
+        } else if (status === 3) {
+          this.messageWater[i] = "The champignons need water! They're dying";
+        }
       }
-      // console.log(status)
-      // console.log(type)
-
-
-    } else if (type == "humidity"){
-       //staus
-      //  console.log(status)
-      // console.log(type)
-    } else if (type == "temperature"){
-       //staus
-      //  console.log(status)
-      // console.log(type)
-    }
-
     },
     checkWater(i, latestValue, idOfPlant) {
-        let type = "water"
-        let status;
-        // console.log(i + " value of i")
+      let type = "water";
+      let status;
       if (latestValue < 70 && latestValue > 25) {
         status = 1;
-        this.triggerAlert(i, type ,status, idOfPlant)
+        this.triggerAlert(i, type, status, idOfPlant);
       } else if (latestValue < 25 && latestValue > 15) {
         status = 2;
-        this.triggerAlert(i, type ,status, idOfPlant)
+        this.triggerAlert(i, type, status, idOfPlant);
       } else if (latestValue < 15) {
         status = 3;
-         this.triggerAlert(i, type ,status, idOfPlant)
+        this.triggerAlert(i, type, status, idOfPlant);
       } else {
-        // console.log("Everything is okay")
+        console.log("All good")
       }
     },
     checkHumidity(latestHumidityValue) {
-
-      if(latestHumidityValue > 70){
+      if (latestHumidityValue > 70) {
         this.showHumidity = false;
       } else if (latestHumidityValue <= 70 && latestHumidityValue >= 65) {
-        this.messageHumidity = "% is still okay!"
-        this.messageHumidity2 = "It's okay if the Humidity level goes up tp 90%"
+        this.messageHumidity = "% is still okay!";
+        this.messageHumidity2 =
+          "It's okay if the Humidity level goes up tp 90%";
         this.showHumidity = true;
       } else if (latestHumidityValue < 65 && latestHumidityValue >= 55) {
-        this.messageHumidity = "% is to low, increase the humidity!"
+        this.messageHumidity = "% is to low, increase the humidity!";
         this.showHumidity = true;
       } else if (latestHumidityValue < 55) {
-        this.messageHumidity = "% is to low, increase the humidity immediately or the champignons are going to die!"
+        this.messageHumidity =
+          "% is to low, increase the humidity immediately or the champignons are going to die!";
         this.showHumidity = true;
       }
     },
     checkTemperature(latestTemperatureValue, idOfPlant) {
-      if(latestTemperatureValue < 25){
-        this.messageTemperature = "°C is way to warm!"
-        this.messageTemperature2 = "Decrease the temperatures immediately!!"
+      if (latestTemperatureValue < 25) {
+        this.messageTemperature = "°C is way to warm!";
+        this.messageTemperature2 = "Decrease the temperatures immediately!!";
         this.showTemperature = true;
       }
       if (latestTemperatureValue < 25 && latestTemperatureValue > 21) {
         console.log("The Temperature is going Down: " + idOfPlant);
-        this.messageTemperature = "°C is way to warm!"
-        this.messageTemperature2 = "The temperatures should not exceed 25° and not fall below 15°!"
+        this.messageTemperature = "°C is way to warm!";
+        this.messageTemperature2 =
+          "The temperatures should not exceed 25° and not fall below 15°!";
         this.showTemperature = true;
       } else if (latestTemperatureValue < 16) {
-        this.messageTemperature = "°C is way to warm!"
-        this.messageTemperature2 = "Increase the temperatures immediately!"
+        this.messageTemperature = "°C is way to warm!";
+        this.messageTemperature2 = "Increase the temperatures immediately!";
       }
     },
     async selectCharts() {
@@ -419,10 +418,8 @@ export default {
         range: range,
       };
       /* Refresh Mois Chart */
-      //console.log("refresh Moisture Chart");
       axios.post(uriMoisture, send).then((response) => {
         let data = response.data;
-        //console.log("_____________");
 
         let newData = [];
         let newDataCat = [];
@@ -453,47 +450,32 @@ export default {
           latestValue = alert[i].data[0];
           idOfPlant = alert[i].name;
           this.checkWater(i, latestValue, idOfPlant);
-          
-
         }
       });
 
       /* Refresh DHT Chart */
-
       const uriDht = "http://localhost:3000/api/dhtData/";
       console.log("starting SensorData process");
       axios
         .post(uriDht, send)
         .then((response) => {
           let data = response.data;
-          console.log(data)
-          console.log("_____________!!111!!")
-          console.log("HZALLLLOOOO")
           let newDataDht = [];
           let labels = [];
           data.forEach((sensor) => {
             let ns = {};
             let ns2 = {};
 
-            console.log(sensor)
-            console.log("sensor")
-
             /* Humidity */
             ns.name = "humidity";
             ns.type = "column";
             ns.data = [];
             ns.id = sensor[0].sensorId;
-            console.log(ns.id)
-            console.log("ns.id")
 
-          /* Temperature */
+            /* Temperature */
             ns2.type = "line";
             ns2.name = "temperature";
             ns2.data = [];
-
-            //let cat = [];
-
-            //cat.categories = [];
 
             sensor.forEach((val) => {
               ns.data.push(val.humidity);
@@ -501,31 +483,14 @@ export default {
               labels.push(val.createdAt);
             });
             newDataDht.push(ns, ns2);
-            //labels.push(labels);
           });
 
-          //console.log(newData);
           this.dhtSensorChart = [...newDataDht];
           this.dhtSensorChartCategories = [...labels];
 
           this.dhtSensors = data;
           let alertDht = [...newDataDht];
 
-          /* 
-          ns aka. dhtSensorChart:
-          [{
-            "name": "xyz", 
-            "humidity": [30, 34, 44, 65, 90],
-            "temperature": [21, 22, 23, 24, 25],
-            }
-          ]
-          cat aka dhtSensorChartCategories:
-          { 
-            "categories": [ "2022-2-2 9:37:10", "2022-2-2 9:36:59", "2022-2-2 9:36:50", "2022-2-2 9:36:40", "2022-2-2 9:36:29" ] 
-            }
- */
-
-          console.log(alertDht);
           for (let i = 0; i < alertDht.length; i++) {
             let latestHumidityValue = [];
             let latestTemperatureValue = [];
@@ -540,7 +505,6 @@ export default {
         })
 
         .catch(function (error) {
-          console.log("something went wrong:");
           console.log(error);
         });
     },
@@ -553,8 +517,4 @@ export default {
   font-family: Helvetica, Sans-Serif;
   color: #000000;
 }
-
-/* [class*="col"] {
-  background-color: lightblue;
-} */
 </style>

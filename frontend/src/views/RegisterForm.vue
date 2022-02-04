@@ -25,12 +25,18 @@
               v-model="password"
             />
             <label for="floatingPassword">Password</label>
-            <br>
-             <div>
-        Allready have an Account?
-        <router-link :to="{ name: 'LoginForm' }">Go back to Login</router-link>
-      </div>
-            <input type="submit" value="Register!" class="btn btn-primary btn-sm float-right">
+            <br />
+            <div>
+              Allready have an Account?
+              <router-link :to="{ name: 'LoginForm' }"
+                >Go back to Login</router-link
+              >
+            </div>
+            <input
+              type="submit"
+              value="Register!"
+              class="btn btn-primary btn-sm float-right"
+            />
           </div>
         </form>
       </div>

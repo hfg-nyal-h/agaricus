@@ -19,13 +19,18 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#" @click="home">Home</a>
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="#"
+                  @click="home"
+                  >Home</a
+                >
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#" @click="sensorManager"
-                  >Sensor Manager</a>  
-                  
-        
+                  >Sensor Manager</a
+                >
               </li>
               <li class="nav-item">
                 <a
@@ -47,7 +52,6 @@
 
     <!-- Page Content -->
     <div id="content">
-      <!-- v-if Loged in? -->
       <div class="row text-justify">
         <div class="col-8 text-start">
           <h3>{{ username }}'s sensors</h3>
@@ -55,22 +59,22 @@
         <div class="col-4 text-end"></div>
       </div>
     </div>
-    <div class="row">
-      
-    </div>
+    <div class="row"></div>
 
-          <editSensors
-                :editSensorWithThisId="editSensorWithThisId" 
-                :editSensorWithThisName="editSensorWithThisName" 
-                :editSensorWithThisType="editSensorWithThisType" />
-          <createSensors/>
-                
-    <!-- List -->
+    <editSensors
+      :editSensorWithThisId="editSensorWithThisId"
+      :editSensorWithThisName="editSensorWithThisName"
+      :editSensorWithThisType="editSensorWithThisType"
+    />
+    <createSensors />
 
-        <!-- Charts -->
-     <div class="row justify-content-center">
-
-         <div v-for="(mySensor, index) in mySensors" :key="mySensor" class="col-lg-5 grey aligns-items-center">
+    <!-- Charts -->
+    <div class="row justify-content-center">
+      <div
+        v-for="(mySensor, index) in mySensors"
+        :key="mySensor"
+        class="col-lg-5 grey aligns-items-center"
+      >
         <br />
         {{ ++index }}. Sensor <br />
         Owner: {{ mySensor.user }} <br />
@@ -81,15 +85,35 @@
         Sent Values: ///missing <br />
         Created at: {{ mySensor.createdAt }} <br />
         Modified at: {{ mySensor.modifiedAt }} <br />
-       <hr>
-        <button class="btn btn-primary btn-sm" v-on:click="editSensor(mySensor._id, mySensor.sensorName, mySensor.sensorType)" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-        <button class="btn btn-secondary btn-sm" v-on:click="deleteSensor(mySensor._id, mySensor.sensorType)" >Delete</button>
+        <hr />
+        <button
+          class="btn btn-primary btn-sm"
+          v-on:click="
+            editSensor(mySensor._id, mySensor.sensorName, mySensor.sensorType)
+          "
+          data-bs-toggle="modal"
+          data-bs-target="#editModal"
+        >
+          Edit
+        </button>
+        <button
+          class="btn btn-secondary btn-sm"
+          v-on:click="deleteSensor(mySensor._id, mySensor.sensorType)"
+        >
+          Delete
+        </button>
       </div>
-     </div>
-     
-    <button class="btn btn-primary btn-sm" v-on:click="createSensor()" data-bs-toggle="modal" data-bs-target="#createModal">Create Sensor!</button>
-  </div>
+    </div>
 
+    <button
+      class="btn btn-primary btn-sm"
+      v-on:click="createSensor()"
+      data-bs-toggle="modal"
+      data-bs-target="#createModal"
+    >
+      Create Sensor!
+    </button>
+  </div>
 </template>
 
 <script>
@@ -133,7 +157,6 @@ export default {
       .post(uri, usernameStore)
       .then((response) => {
         this.mySensors = response.data;
-        console.log(response.data + " sensor information");
       })
       .catch(function (error) {
         console.log("something went wrong:");
@@ -141,36 +164,29 @@ export default {
       });
   },
   methods: {
-      logout() {
+    logout() {
       this.$store.dispatch("logout");
       this.$router.push("/api/login");
     },
 
-
     editSensor(id, name, type) {
-      //this.$router.push("/api/sensors/create");
       this.editSensorWithThisId = id;
       this.editSensorWithThisName = name;
       this.editSensorWithThisType = type;
-      console.log(id + " id" + type + " type" + name + " name" )
-      //this.isShow = true
-      //this.$router.push("/api/sensors/edit");
     },
-    
-      async deleteSensor(id, type) {
-        let sensorData = {
+
+    async deleteSensor(id, type) {
+      let sensorData = {
         sensorId: id,
         sensorType: type,
-      }; 
-        const uri = "http://localhost:3000/api/deleteSensor/";
-        axios
-        .post(uri, sensorData)
-        .then((response) => {
+      };
+      const uri = "http://localhost:3000/api/deleteSensor/";
+      axios.post(uri, sensorData).then((response) => {
         console.log(response + "sensor has been deleted");
       });
       location.reload();
-      },
-      sensorManager() {
+    },
+    sensorManager() {
       this.$router.push("/api/sensors");
     },
     home() {
@@ -182,8 +198,8 @@ export default {
 
 <style>
 * {
-    font-family: Helvetica, Sans-Serif;
-    color: #000000
+  font-family: Helvetica, Sans-Serif;
+  color: #000000;
 }
 .hidden {
   display: none;

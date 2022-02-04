@@ -7,10 +7,8 @@ import NotFound from "../views/NotFound.vue";
 import sensors from "../views/sensors.vue";
 import createSensors from "../views/createSensors.vue";
 import editSensors from "../views/editSensors.vue";
-import apexCharts from "../views/apexChart.vue";
 import apexLineChart from "../views/apexLineChart.vue";
 import apexDhtChart from "../views/apexDhtChart.vue";
-
 
 const routes = [
   {
@@ -22,15 +20,9 @@ const routes = [
       {
         path: "/users",
         name: "users",
-        component: users,     
+        component: users,
         props: true,
-         children: [
-          {
-            path: "chart",
-            name: "apexCharts",
-            component: apexCharts,
-            props: true,
-          }, 
+        children: [
           {
             path: "chartLine",
             name: "apexLineChart",
@@ -42,13 +34,11 @@ const routes = [
             name: "apexDhtChart",
             component: apexDhtChart,
             props: true,
-          }
-
-        ], 
+          },
+        ],
       },
-    ]
+    ],
   },
-
 
   {
     path: "/api/login",
