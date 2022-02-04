@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="chart">
+      <button class="btn btn-secondary btn-sm"  @click="update">update</button>
       <apexchart
         type="line"
         height="350"
@@ -9,6 +10,8 @@
       ></apexchart>
       <br />
     </div>
+      {{dhtSensorChart[0]}}
+      {{dhtSensorChart[1]}}
   </div>
 </template>
 
@@ -23,14 +26,14 @@ export default {
     return {
       series: [
         {
-          name: "Website Blog",
+          name: "Humidity",
           type: "column",
-          data: [440, 505, 414,50],
+          data: [20, 40, 60, 40, 20],
         },
         {
-          name: "Social Media",
+          name: "Temperature",
           type: "line",
-          data: [0,6,4,1]
+          data: [24,16,4,16,24 ]
         },
       ],
 
@@ -43,7 +46,7 @@ export default {
           width: [0, 4],
         },
         title: {
-          text: "Traffic Sources",
+          text: "Humidity and Temperature",
         },
         dataLabels: {
           enabled: true,
@@ -84,12 +87,24 @@ export default {
       },
     };
   },
-  updated() {
-    console.log("called updated()");
+    methods:{
+    update (){
+    console.log("called updated() DHT");
     this.series = this.dhtSensorChart;
     this.chartOptions = {
-      labels: this.dhtSensorChartCategories
+      labels: this.dhtSensorChartCategories,
+      //title: this.dhtSensorChart[1].id,
     }
+  },
+    
+  },
+  updated() {
+/*     console.log("called updated() DHT");
+    this.series = this.dhtSensorChart;
+    this.chartOptions = {
+      labels: this.dhtSensorChartCategories,
+      //title: this.dhtSensorChart[1].id,
+    } */
   },
 }
 </script>

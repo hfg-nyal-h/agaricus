@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="chart">
+      <button class="btn btn-secondary btn-sm" @click="update">update</button>
       <apexchart
         type="line"
         height="350"
@@ -23,13 +24,14 @@ export default {
       series: [
         {
           name: "test",
-        data:[0,1,2,1,0]
-        }],
+          data: [0, 1, 2, 1, 0],
+        },
+      ],
       chartOptions: {
         chart: {
-              animations: {
-        enabled: true,
-              },
+          animations: {
+            enabled: true,
+          },
           height: 350,
           type: "line",
           zoom: {
@@ -45,7 +47,7 @@ export default {
           dashArray: [0, 8, 5],
         },
         title: {
-          text: "Page Statistics",
+          text: "Moisture",
           align: "left",
         },
         legend: {
@@ -72,8 +74,6 @@ export default {
             "4 hours ago",
             "5 hours ago",
             "6 hours ago",
-
-
           ],
         },
         tooltip: {
@@ -108,24 +108,38 @@ export default {
     };
   },
   created() {
-        
+/*         console.log("called created() ___________");
+    this.series = [...this.mySensorsLineChart];
+    this.chartOptions = {
+      xaxis: this.mySensorsLineChartCategories[1],
+      labels: {
+        show: true,
+      },
+    }; */
+  },
+  methods:{
+    update (){
+        console.log("called created() ___________");
+    this.series = [...this.mySensorsLineChart];
+    this.chartOptions = {
+      xaxis: this.mySensorsLineChartCategories[1],
+      labels: {
+        show: true,
+      },
+    };
+    
+    }
   },
 
   updated() {
-    //let newCategories = ["moin","moin","moin","moin","moin","moin","moin"]
-    console.log("called updated()")
-    this.series = [...this.mySensorsLineChart]
-    
-    //this.chartOptions.xaxis = {...this.mySensorsLineChartCategories}
-  this.chartOptions = {
-        xaxis:
-          this.mySensorsLineChartCategories[1],
-          labels: {
-            show: true,
-          },
-      };
-
-  }
-  }
-  
+/*         console.log("called created() ___________");
+    this.series = [...this.mySensorsLineChart];
+    this.chartOptions = {
+      xaxis: this.mySensorsLineChartCategories[1],
+      labels: {
+        show: true,
+      },
+    }; */
+},
+};
 </script>
