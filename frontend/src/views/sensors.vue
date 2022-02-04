@@ -68,8 +68,9 @@
     <!-- List -->
 
         <!-- Charts -->
-     <div class="row">
-         <div v-for="(mySensor, index) in mySensors" :key="mySensor" class="col-lg-6">
+     <div class="row justify-content-center">
+
+         <div v-for="(mySensor, index) in mySensors" :key="mySensor" class="col-lg-5 grey aligns-items-center">
         <br />
         {{ ++index }}. Sensor <br />
         Owner: {{ mySensor.user }} <br />
@@ -81,8 +82,8 @@
         Created at: {{ mySensor.createdAt }} <br />
         Modified at: {{ mySensor.modifiedAt }} <br />
        <hr>
-        <button v-on:click="editSensor(mySensor._id, mySensor.sensorName, mySensor.sensorType)" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-        <button v-on:click="deleteSensor(mySensor._id, mySensor.sensorType)" >Delete</button>
+        <button class="btn btn-primary btn-sm" v-on:click="editSensor(mySensor._id, mySensor.sensorName, mySensor.sensorType)" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+        <button class="btn btn-secondary btn-sm" v-on:click="deleteSensor(mySensor._id, mySensor.sensorType)" >Delete</button>
       </div>
      </div>
      

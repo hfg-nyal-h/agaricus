@@ -62,11 +62,11 @@
 
       <!-- Charts -->
       <br />
-      <div class="row">
+      <div class="row justify-content-center">
         <div
           v-for="(mySensor, index) in mySensors"
           :key="mySensor"
-          class="col-lg-6"
+          class="col-lg-5 grey aligns-items-center"
         >
           <h5>
             <b>{{ ++index }}. sensor</b>
