@@ -1,11 +1,8 @@
 require("dotenv").config();
 const { v4: uuidv4 } = require("uuid");
 
-/* const dbUri =
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}?retryWrites=true&w=majority`;
- */
-const dbUri =
-  "mongodb+srv://DatabaseChef:qGyMeJ73Jl5FBcbd@cluster0.jntzv.mongodb.net/moistureTracking?retryWrites=true&w=majority";
+const dbUri = process.env.DB
+
 const { MongoClient } = require("mongodb");
 const dbClient = new MongoClient(dbUri, {
   useNewUrlParser: true,
@@ -48,7 +45,6 @@ mqttClient.on("connect", function () {
     if (err) {
       console.log(err);
     } else {
-      //Hier muss ich den Sensorname und die SensorId aus der Datenbank holen
       mqttClient.publish(moistureTopic + "logs/", mqttId + " connected");
       console.log("subscribed to " + moistureTopic);
     }
@@ -57,14 +53,11 @@ mqttClient.on("connect", function () {
 
 /* Moisture */
 mqttClient.on("message", function (moistureTopic, message) {
-  // console.log(JSON.parse(message));
   if (dataCollecion) {
     let msg = JSON.parse(message);
     date = new Date()
     msg.createdAt = now();
     msg.modifiedAt = now();
-    //msg.day = day();
-
 
     dataCollecion.insertOne(msg);
     console.log(msg);
@@ -73,14 +66,9 @@ mqttClient.on("message", function (moistureTopic, message) {
 
 
 const express = require("express");
-//const axios = require('axios');
 const app = express();
 const port = process.env.MOISTURE_SERVICE_PORT;
 const cors = require("cors");
-/*  const corsOptions = {
-  origin: "http://localhost:8080"
-
-};  */
 const corsOptions = {
   origin: "*",
 };
@@ -101,8 +89,6 @@ let sensorArray = [];
 
 app.post("/api/sensorData/", (req, res) => {
   let username = req.body.storage.username;
- /*  console.log(req.body.range)
-  console.log(req.body) */
   let available;
   range = Number(req.body.range);
 
@@ -148,32 +134,20 @@ app.post("/api/sensorData/", (req, res) => {
 
 app.post("/api/dhtData/", (req, res,) => {
   let username = req.body.storage.username;
-  console.log(username);
-  console.log(req.body.range)
-  console.log(req.body)
   let type = "Moisture and DHT"
   let range = Number(req.body.range);
-  //
-  //let type = "Moisture"
   let available;
-/* Hier Spezifisch bei find nach User und Type suchen */
+
   sensorCollection
-    .find({ sensorType: type})
+    .find({ user: username, sensorType: type})
     .toArray()
     .then((available) => {
       let zwischenarray = [];
       available.forEach((element) => {
         zwischenarray.push(element);
-          console.log(element);
-          //console.log(" :element");
       });
-      console.log(zwischenarray)
-      //console.log(" :zwischenarray");
-
       for (let index = 0; index < zwischenarray.length; index++) {
-        console.log(index + " index")
         const element = zwischenarray[index];
-        console.log(element)
         let dataarray = [];
         let placeholder = {
           sensorId: element.sensorId,
@@ -193,20 +167,16 @@ app.post("/api/dhtData/", (req, res,) => {
             if (result.length != 0) {
               dataarray.push(result);
             } else {
-              console.log("Has no value")
               dataarray.push(placeholder);
             }
             //dataarray = [];
             if (dataarray.length === zwischenarray.length) {
-              console.log(dataarray)
-              console.log(" :dataarray")
               res.send(dataarray);
             }
           }); 
       }
     });
 });
-
 
 
 app.get("/api/sensorData/searchSensor/", (req, res) => {
@@ -219,7 +189,6 @@ app.get("/api/sensorData/searchSensor/", (req, res) => {
     .then((available) => {
       if(available){
         res.status(200).send(available);
-        console.log(available)
         } else {
           console.log("failed")
         }
@@ -228,7 +197,6 @@ app.get("/api/sensorData/searchSensor/", (req, res) => {
 
 app.post("/api/sensorData/create/", (req, res) => {
   let sensorData = req.body;
-  console.log(sensorData + " value of SensorData");
 
   sensorData.user = sensorData.user;
   sensorData.createdAt = now();
@@ -236,7 +204,6 @@ app.post("/api/sensorData/create/", (req, res) => {
   sensorData._id = uuidv4();
   sensorData.sentData = "";
   sensorData.averangeValue = "";
-  console.log(sensorData);
 
     sensorCollection.insertOne(sensorData, (dbErr) => {
       if (dbErr) {
@@ -256,20 +223,10 @@ app.post("/api/sensorData/create/", (req, res) => {
 });
 });
 
-app.post("/api/sensorInformation/", (req, res) => {
-  let username = req.body.username;
-  sensorCollection
-    .find({ user: username })
-    .toArray()
-    .then((available) => {
-      res.send(available);
-    });
-});
 
 
 app.post("/api/editSensor/", (req, res) => {
   let sensorData = req.body;
-  console.log(sensorData.sensorName + " value of sensorData in dataservice")
   let myquery = {
   _id: sensorData.sensorId,
   };
@@ -289,7 +246,6 @@ sensorCollection
 
 app.post("/api/deleteSensor/", (req, res) => {
   let sensorData = req.body;
-  console.log(sensorData.sensorId + " value of sensorData in dataservice")
   let myquery = {
   _id: sensorData.sensorId,
   };
@@ -298,6 +254,16 @@ app.post("/api/deleteSensor/", (req, res) => {
 
 sensorCollection
   .deleteOne(myquery)
+});
+
+app.post("/api/sensorInformation/", (req, res) => {
+  let username = req.body.username;
+  sensorCollection
+    .find({ user: username })
+    .toArray()
+    .then((available) => {
+      res.send(available);
+    });
 });
 
 function now(){
@@ -312,10 +278,3 @@ return (year+'-' + month + '-' + dt +" "+   h +":" +min+":" +sec);
 }
 
 
-function day(){
-  let date = new Date();
-  year = date.getFullYear();
-  month = date.getMonth()+1;
-  dt = date.getDate();
-  return (year+'-' + month + '-' + dt);
-}
