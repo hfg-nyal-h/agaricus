@@ -47,10 +47,12 @@ Das anlegen wie bearbeiten neuer Sensorwerte erfolgt ebenfalls auf der Weboberfl
 
 ### Moisture
 <a href="https://ibb.co/wRtkxpt"><img src="https://i.ibb.co/BtkpSTk/IMG-5514.jpg" alt="IMG-5514" border="0"></a>
+
 Mit dem Moisture Sensor wird gediglich die Bodenfeuchtigkeit gemessen
 
 ### Moisture and DHT
 <a href="https://ibb.co/yf0RhDD"><img src="https://i.ibb.co/vw1Bsbb/IMG-5517.jpg" alt="IMG-5517" border="0"></a>
+
 Mit dem Moisture and DHT Sensor wird die Bodenfeuchtigkeit wie die Temperatur und Luftfeuchtigkeit gemessen.
 
 ## Installation
