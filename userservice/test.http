@@ -1,0 +1,63 @@
+POST http://localhost:3001/api/sensordaten
+Content-Type: application/json
+
+{
+   "token": "bc0f01a2-53ed-4851-9ac2-5ad33f334703"
+}
+
+###
+
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "luca",
+    "password": "moin"
+}
+###
+POST http://localhost:3001/api/validateToken
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1Y2EiLCJteXVzZXJuYW1lIjoibHVjYSIsInVzZXJJZCI6IjYxY2IxZGM5Mzg2YjMzMDNjZjJkMzgwNiIsImlhdCI6MTY0MTU2NTI0NiwiZXhwIjoxNjQyMTcwMDQ2fQ.QsRxSAMxxPW4Oyx7apW89Pk8Em1DskHzvdCOJ3cyIsE"
+}
+
+
+###
+
+POST http://localhost:3001/api/register
+Content-Type: application/json
+
+{
+    "username": "luca12",
+    "password": "moindd"
+}
+
+###
+
+POST http://localhost:3001/api/user
+Content-Type: application/json
+
+{
+    "token": "5f3d2202-de17-4f49-8425-448bfeca0e10"
+}
+
+###
+
+POST http://localhost:3000/api/sensorInformation/
+Content-Type: application/json
+
+{
+    "username": "luca"
+}
+
+###
+
+GET http://localhost:3000/api/sensorData/searchSensor/
+Content-Type: application/json
+
+{
+
+"user": "luca"
+
+}
