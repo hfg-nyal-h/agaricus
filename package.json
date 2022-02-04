@@ -1,0 +1,19 @@
+{
+  "name": "agaricus",
+  "version": "1.0.0",
+  "description": "champignons",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hfg-nyal-h/agaricus.git"
+  },
+  "author": "nyal hettmer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hfg-nyal-h/agaricus/issues"
+  },
+  "homepage": "https://github.com/hfg-nyal-h/agaricus#readme"
+}
