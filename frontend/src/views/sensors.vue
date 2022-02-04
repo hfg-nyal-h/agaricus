@@ -87,7 +87,7 @@
       </div>
      </div>
      
-    <button v-on:click="createSensor()" data-bs-toggle="modal" data-bs-target="#createModal">Create Sensor!</button>
+    <button class="btn btn-primary btn-sm" v-on:click="createSensor()" data-bs-toggle="modal" data-bs-target="#createModal">Create Sensor!</button>
   </div>
 
 </template>
@@ -141,6 +141,10 @@ export default {
       });
   },
   methods: {
+      logout() {
+      this.$store.dispatch("logout");
+      this.$router.push("/api/login");
+    },
 
 
     editSensor(id, name, type) {

@@ -10,8 +10,6 @@
       ></apexchart>
       <br />
     </div>
-      {{dhtSensorChart[0]}}
-      {{dhtSensorChart[1]}}
   </div>
 </template>
 
@@ -80,7 +78,7 @@ export default {
             opposite: true,
             title: {
               text: "Temperature",
-              max: 40,
+              
             },
           },
         ],

@@ -9,6 +9,7 @@
         :series="series"
       ></apexchart>
     </div>
+    {{mySensorsLineChart}}
   </div>
 </template>
 

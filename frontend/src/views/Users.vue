@@ -1,10 +1,5 @@
 <template>
   <div class="container wd-100">
-    <div :show="isVisible">
-      <div class="alert alert-secondary">
-        This is a primary alert—check it out!
-      </div>
-    </div>
     <div class="header">
       <!-- Nav -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -47,6 +42,12 @@
       </nav>
     </div>
 
+
+    <div v-show="alertWater"  class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Holy guacamole!</strong> {{messageWater[i]}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
     <br />
 
     <!-- Page Content -->
@@ -57,17 +58,37 @@
         <div class="col-8 text-start">
           <h3>{{ username }}'s sensor dashboard</h3>
         </div>
-        <div class="col-4 text-end"><h3>moin</h3></div>
+        <div class="fw-lighter col-4 text-end">
+          Temperature: {{temperatureNow}}°C
+          Humidity: {{humidityNow}}%
+        
+        </div>
       </div>
+
+<div v-show="showTemperature" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Warning!</strong> {{temperatureNow}} {{messageTemperature}}
+
+  {{messageTemperature2}} 
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div v-show="showHumidity" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Warning!</strong> {{humidityNow}} {{messageHumidity}} <br>
+   The humidity level of the room must be constant at least 65%. <br>
+ {{messageHumidity2}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
       <!-- Charts -->
       <br />
       <div class="row justify-content-center">
         <div
+          :id="index"
           v-for="(mySensor, index) in mySensors"
           :key="mySensor"
           class="col-lg-5 grey aligns-items-center"
         >
+       <div class="fw-lighter"> {{messageWater[index]}} </div>
           <h5>
             <b>{{ ++index }}. sensor</b>
           </h5>
@@ -76,6 +97,7 @@
           <b>moisture</b> {{ mySensor[0].moisture }}% <br />
           <b>sensor id:</b> {{ mySensor[0].sensorId }} <br />
           <b>last value:</b> {{ mySensor[0].createdAt }} <br />
+
           <br />
           <!--  <apexCharts :mySensors="mySensor" /> -->
         </div>
@@ -151,8 +173,16 @@ export default {
       dhtSensorChart: [],
       dhtSensorChartCategories: [],
       secretMessage: "",
-      isVisible: false,
+      isVisible: true,
+      alertWater: false,
+      messageWater: [],
+      msg: "",
       moistureChartRange: this.moistureChartRange,
+      humidityNow: [],
+      temperatureNow: [],
+      showTemperature: false,
+      showHumidity: false,
+
     };
   },
 
@@ -185,7 +215,7 @@ export default {
       .post(uriMoisture, sendingData)
       .then((response) => {
         let data = response.data;
-        console.log("_____________");
+        console.log("_____oooo________");
         //console.log(this.mySensors);
         //this.mySensors
         let newData = [];
@@ -211,14 +241,14 @@ export default {
         this.mySensors = data;
         let alert = [...newData];
 
-        console.log(alert);
+        //console.log(alert);
         for (let i = 0; i < alert.length; i++) {
           let latestValue = [];
           let idOfPlant = [];
           latestValue = alert[i].data[0];
           idOfPlant = alert[i].name;
 
-          this.checkWater(latestValue, idOfPlant);
+          this.checkWater(i, latestValue, idOfPlant);
         }
       })
 
@@ -235,7 +265,9 @@ export default {
       .post(uriDht, sendingData)
       .then((response) => {
         let data = response.data;
-        console.log("_____________");
+        //console.log(response.data)
+       // console.log("_____________");
+
         let newDataDht = [];
         let labels = [];
         data.forEach((sensor) => {
@@ -262,15 +294,25 @@ export default {
 
         this.dhtSensors = data;
         let alertDht = [...newDataDht];
+        // console.log(alertDht);
+        //  console.log(alertDht[0].data[0]);
+        //  console.log(alertDht[1].data[0]);
+        // console.log("alertDht")
 
         console.log(alertDht);
         for (let i = 0; i < alertDht.length; i++) {
           let latestHumidityValue = [];
           let latestTemperatureValue = [];
           let idOfPlant = [];
-          latestHumidityValue = alertDht[i].humidity[0];
-          latestTemperatureValue = alertDht[i].temperature[0];
+          latestHumidityValue = alertDht[0].data[0];
+          latestTemperatureValue = alertDht[1].data[0];
           idOfPlant = alertDht[i].name;
+
+          // console.log(latestHumidityValue, latestTemperatureValue)
+          // console.log("latest values")
+
+          this.temperatureNow = latestTemperatureValue
+          this.humidityNow = latestHumidityValue
 
           this.checkHumidity(latestHumidityValue, idOfPlant);
           this.checkTemperature(latestTemperatureValue, idOfPlant);
@@ -291,37 +333,80 @@ export default {
     sensorManager() {
       this.$router.push("/api/sensors");
     },
-    triggerAlert() {
-      this.showAlert = true;
+    
+    triggerAlert(i, type, status, idOfPlant){
+    if(type == "water"){
+      //staus
+      console.log(idOfPlant)
+      if(status === 1){
+      this.messageWater[i] = "Please water the champignons " 
+      } else if ( status === 2){
+      this.messageWater[i] = "The champignons are pretty dry" 
+      } else if (status === 3 ){
+      this.messageWater[i] = "The champignons need water! They're dying"
+      }
+      // console.log(status)
+      // console.log(type)
+
+
+    } else if (type == "humidity"){
+       //staus
+      //  console.log(status)
+      // console.log(type)
+    } else if (type == "temperature"){
+       //staus
+      //  console.log(status)
+      // console.log(type)
+    }
+
     },
-    checkWater(latestValue, idOfPlant) {
-      if (latestValue < 50 && latestValue > 25) {
-        console.log("Water your plant with he id: " + idOfPlant);
-        this.showAlert = !this.showAlert;
-      } else if (latestValue < 25 && latestValue > 10) {
-        console.log("Your Plant with he id: " + idOfPlant + " is to dry");
-      } else if (latestValue < 10) {
-        console.log("Your Plant with he id: " + idOfPlant + "  is dying");
+    checkWater(i, latestValue, idOfPlant) {
+        let type = "water"
+        let status;
+        // console.log(i + " value of i")
+      if (latestValue < 70 && latestValue > 25) {
+        status = 1;
+        this.triggerAlert(i, type ,status, idOfPlant)
+      } else if (latestValue < 25 && latestValue > 15) {
+        status = 2;
+        this.triggerAlert(i, type ,status, idOfPlant)
+      } else if (latestValue < 15) {
+        status = 3;
+         this.triggerAlert(i, type ,status, idOfPlant)
+      } else {
+        // console.log("Everything is okay")
       }
     },
-    checkHumidity(latestHumidityValue, idOfPlant) {
-      if (latestHumidityValue < 50 && latestHumidityValue > 25) {
-        console.log("The Temperature is going Down: " + idOfPlant);
-        /* this.showAlert = !this.showAlert */
-      } else if (latestHumidityValue < 25 && latestHumidityValue > 10) {
-        console.log("Temperature: " + idOfPlant + " is to dry");
-      } else if (latestHumidityValue < 10) {
-        console.log("Temperature: " + idOfPlant + "  is dying");
+    checkHumidity(latestHumidityValue) {
+
+      if(latestHumidityValue > 70){
+        this.showHumidity = false;
+      } else if (latestHumidityValue <= 70 && latestHumidityValue >= 65) {
+        this.messageHumidity = "% is still okay!"
+        this.messageHumidity2 = "It's okay if the Humidity level goes up tp 90%"
+        this.showHumidity = true;
+      } else if (latestHumidityValue < 65 && latestHumidityValue >= 55) {
+        this.messageHumidity = "% is to low, increase the humidity!"
+        this.showHumidity = true;
+      } else if (latestHumidityValue < 55) {
+        this.messageHumidity = "% is to low, increase the humidity immediately or the champignons are going to die!"
+        this.showHumidity = true;
       }
     },
     checkTemperature(latestTemperatureValue, idOfPlant) {
-      if (latestTemperatureValue < 50 && latestTemperatureValue > 25) {
+      if(latestTemperatureValue < 25){
+        this.messageTemperature = "°C is way to warm!"
+        this.messageTemperature2 = "Decrease the temperatures immediately!!"
+        this.showTemperature = true;
+      }
+      if (latestTemperatureValue < 25 && latestTemperatureValue > 21) {
         console.log("The Temperature is going Down: " + idOfPlant);
-        /* this.showAlert = !this.showAlert */
-      } else if (latestTemperatureValue < 25 && latestTemperatureValue > 10) {
-        console.log("Temperature: " + idOfPlant + " is to dry");
-      } else if (latestTemperatureValue < 10) {
-        console.log("Temperature: " + idOfPlant + "  is dying");
+        this.messageTemperature = "°C is way to warm!"
+        this.messageTemperature2 = "The temperatures should not exceed 25° and not fall below 15°!"
+        this.showTemperature = true;
+      } else if (latestTemperatureValue < 16) {
+        this.messageTemperature = "°C is way to warm!"
+        this.messageTemperature2 = "Increase the temperatures immediately!"
       }
     },
     async selectCharts() {
@@ -334,10 +419,10 @@ export default {
         range: range,
       };
       /* Refresh Mois Chart */
-      console.log("refresh Moisture Chart");
+      //console.log("refresh Moisture Chart");
       axios.post(uriMoisture, send).then((response) => {
         let data = response.data;
-        console.log("_____________");
+        //console.log("_____________");
 
         let newData = [];
         let newDataCat = [];
@@ -367,8 +452,9 @@ export default {
           let idOfPlant = [];
           latestValue = alert[i].data[0];
           idOfPlant = alert[i].name;
+          this.checkWater(i, latestValue, idOfPlant);
+          
 
-          this.checkWater(latestValue, idOfPlant);
         }
       });
 
@@ -380,7 +466,9 @@ export default {
         .post(uriDht, send)
         .then((response) => {
           let data = response.data;
-          console.log("_____________");
+          console.log(data)
+          console.log("_____________!!111!!")
+          console.log("HZALLLLOOOO")
           let newDataDht = [];
           let labels = [];
           data.forEach((sensor) => {

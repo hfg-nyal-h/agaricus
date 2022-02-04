@@ -35,9 +35,7 @@
             <!--  <label for="sensorType">new Sensorname</label> -->
           </div>
 
-            <button @click.prevent="searchSensor()">   Search
-          </button>
-          {{noOwner}}
+      
 
           <!-- Edit SensorType -->
           <!-- <div class="mb-3">

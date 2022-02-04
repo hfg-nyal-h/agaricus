@@ -1,10 +1,6 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/api/login">login</router-link>|
-    <router-link to="/api/register">register</router-link>|
-    <router-link to="/api/user">user</router-link>|
-    <router-link to="/validateToken">valdiateToken</router-link>|
+
 
     <router-view/>
   </div>

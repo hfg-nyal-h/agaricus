@@ -1,24 +1,42 @@
 <template>
-  <div class="register-form form">
-    <h3>Register</h3>
-    <form @submit.prevent="register" novalidate autocomplete="off">
-      <label for="username">Username: </label>
-      
-      <input type="text" id="username" name="username" v-model="username" />
-      <br />
-      <label for="password">Passwort: </label>
-      <input type="text" id="password" name="password" v-model="password" />
-      <!-- <input type="text" placeholder="Password (repeat)" v-model="password_repeat" -->
-      />
-      <br />
-      <input type="submit" value="Register!" />
-      <div>
+  <div class="container">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+        <h1>Register</h1>
+        <form @submit.prevent="register" novalidate autocomplete="off">
+          <div class="form-floating mb-3">
+            <input
+              type="Username"
+              class="form-control"
+              id="floatingInput"
+              placeholder="username"
+              v-model="username"
+              width="20%"
+            />
+            <label for="floatingInput">Username</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="Password"
+              class="form-control"
+              id="floatingPassword"
+              placeholder="Password"
+              v-model="password"
+            />
+            <label for="floatingPassword">Password</label>
+            <br>
+             <div>
         Allready have an Account?
         <router-link :to="{ name: 'LoginForm' }">Go back to Login</router-link>
       </div>
-    </form>
+            <input type="submit" value="Register!" class="btn btn-primary btn-sm float-right">
+          </div>
+        </form>
+      </div>
+      <div class="col"></div>
+    </div>
   </div>
-  <router-view />
 </template>
 
 <script>
